@@ -49,7 +49,7 @@ export default function EditorPage() {
         try {
           const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://design-editor-backend-production.up.railway.app';
           socketService.connect(socketUrl);
-          console.log('🔌 Socket connection initiated to:', socketUrl);
+          console.log('Socket connection initiated to:', socketUrl);
 
           await new Promise<void>((resolve) => {
             let connectionAttempts = 0;

@@ -4,15 +4,6 @@ import { setActiveUsers, updateDesignName } from '../store/designSlice';
 import { reorderElements, setCanvasBackground, setCanvasDimensions } from '../store/canvasSlice';
 import { setIsProcessingRemoteUpdate, getIsProcessingRemoteUpdate } from '../store/remoteUpdateFlag';
 
-/**
- * Socket Middleware - Handles Socket.io events
- *
- * RESPONSIBILITIES:
- * 1. Emit Socket events when local Redux actions occur
- * 2. Listen for Socket events and dispatch Redux actions
- * 3. Filter out own updates using clientId comparison
- */
-
 export const socketMiddleware: Middleware = (store) => {
   let currentDesignId: string | null = null;
 
@@ -47,14 +38,7 @@ export const socketMiddleware: Middleware = (store) => {
         const { width, height } = action.payload;
         socketService.emitResize(designId, clientId, timestamp, width, height);
       }
-    }
 
-    // Pass action through Redux
-    const result = next(action);
-
-    // EMIT: For undo/redo, emit the full design update to sync with other windows
-    // We check for canvas/restoreElements because that's what gets called during undo/redo
-    if (clientId && designId && isConnected && !getIsProcessingRemoteUpdate()) {
       if (action.type === 'canvas/restoreElements') {
         const newState = store.getState();
         const timestamp = Date.now();
@@ -67,6 +51,9 @@ export const socketMiddleware: Middleware = (store) => {
         });
       }
     }
+
+    // Pass action through Redux
+    const result = next(action);
 
     // LISTEN: Setup Socket listeners when design changes
     const newState = store.getState();
@@ -130,7 +117,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for element added
   socketService.onElementAdded((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Adding element from remote:', data.element.id);
+      console.log('Adding element from remote:', data.element.id);
       setIsProcessingRemoteUpdate(true);
       const state = store.getState();
       const elements = [...state.canvas.elements, data.element];
@@ -142,7 +129,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for element updated
   socketService.onElementUpdated((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Updating element from remote:', data.elementId);
+      console.log('Updating element from remote:', data.elementId);
       setIsProcessingRemoteUpdate(true);
       const state = store.getState();
       const elements = state.canvas.elements.map((el: any) =>
@@ -156,7 +143,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for element deleted
   socketService.onElementDeleted((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Deleting element from remote:', data.elementId);
+      console.log('Deleting element from remote:', data.elementId);
       setIsProcessingRemoteUpdate(true);
       const state = store.getState();
       const elements = state.canvas.elements.filter((el: any) => el.id !== data.elementId);
@@ -168,7 +155,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for background changed
   socketService.onBackgroundChanged((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Background changed from remote');
+      console.log('Background changed from remote');
       setIsProcessingRemoteUpdate(true);
       store.dispatch(setCanvasBackground(data.canvasBackground));
       setIsProcessingRemoteUpdate(false);
@@ -178,7 +165,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for canvas resized
   socketService.onCanvasResized((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Canvas resized from remote');
+      console.log('Canvas resized from remote');
       setIsProcessingRemoteUpdate(true);
       store.dispatch(setCanvasDimensions({ width: data.width, height: data.height }));
       setIsProcessingRemoteUpdate(false);
@@ -188,7 +175,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for design name changed
   socketService.onDesignNameChanged((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Design renamed from remote:', data.name);
+      console.log('Design renamed from remote:', data.name);
       store.dispatch(updateDesignName(data.name));
     }
   });
@@ -196,7 +183,7 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
   // Listen for full design update
   socketService.onDesignUpdate((data) => {
     if (data.designId === designId && data.clientId !== clientId) {
-      console.log('✅ Full design update from remote');
+      console.log('Full design update from remote');
       setIsProcessingRemoteUpdate(true);
       const changes = data.changes;
       if (changes.elements) {
@@ -215,6 +202,6 @@ const setupSocketListeners = (store: any, designId: string, clientId: string | n
     }
   });
 
-  console.log('✅ Socket listeners setup complete for design:', designId);
+  console.log('Socket listeners setup complete for design:', designId);
 };
 

@@ -58,62 +58,62 @@ class SocketService {
 
   joinDesign(designId: string, clientId: string): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:join', { designId, clientId });
+    console.log('Emitting design:join', { designId, clientId });
     this.socket.emit('design:join', { designId, clientId });
   }
 
   leaveDesign(designId: string): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:leave', { designId });
+    console.log('Emitting design:leave', { designId });
     this.socket.emit('design:leave', { designId });
   }
 
   emitUpdate(designId: string, clientId: string, timestamp: number, changes: any): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:update', { designId, clientId });
+    console.log('Emitting design:update', { designId, clientId });
     this.socket.emit('design:update', { designId, clientId, timestamp, changes });
   }
 
   emitElementAdd(designId: string, clientId: string, timestamp: number, element: any): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:element-add', { designId, elementId: element.id });
+    console.log('Emitting design:element-add', { designId, elementId: element.id });
     this.socket.emit('design:element-add', { designId, clientId, timestamp, element });
   }
 
   emitElementUpdate(designId: string, clientId: string, timestamp: number, elementId: string, updates: any): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:element-update', { designId, elementId });
+    console.log('Emitting design:element-update', { designId, elementId });
     this.socket.emit('design:element-update', { designId, clientId, timestamp, elementId, updates });
   }
 
   emitElementDelete(designId: string, clientId: string, timestamp: number, elementId: string): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:element-delete', { designId, elementId });
+    console.log('Emitting design:element-delete', { designId, elementId });
     this.socket.emit('design:element-delete', { designId, clientId, timestamp, elementId });
   }
 
   emitBackgroundChange(designId: string, clientId: string, timestamp: number, canvasBackground: string): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:background-change', { designId });
+    console.log('Emitting design:background-change', { designId });
     this.socket.emit('design:background-change', { designId, clientId, timestamp, canvasBackground });
   }
 
   emitResize(designId: string, clientId: string, timestamp: number, width: number, height: number): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:resize', { designId, width, height });
+    console.log('Emitting design:resize', { designId, width, height });
     this.socket.emit('design:resize', { designId, clientId, timestamp, width, height });
   }
 
   emitNameChange(designId: string, clientId: string, timestamp: number, name: string): void {
     if (!this.socket) return;
-    console.log('📤 Emitting design:name-change', { designId, name });
+    console.log('Emitting design:name-change', { designId, name });
     this.socket.emit('design:name-change', { designId, clientId, timestamp, name });
   }
 
   onUserJoined(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:user-joined', (data) => {
-      console.log('📥 Received design:user-joined', data);
+      console.log(' Received design:user-joined', data);
       callback(data);
     });
   }
@@ -121,7 +121,7 @@ class SocketService {
   onUserLeft(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:user-left', (data) => {
-      console.log('📥 Received design:user-left', data);
+      console.log(' Received design:user-left', data);
       callback(data);
     });
   }
@@ -129,7 +129,7 @@ class SocketService {
   onDesignUpdate(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:update-received', (data) => {
-      console.log('📥 Received design:update-received', data);
+      console.log(' Received design:update-received', data);
       callback(data);
     });
   }
@@ -137,7 +137,7 @@ class SocketService {
   onElementAdded(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:element-added', (data) => {
-      console.log('📥 Received design:element-added', data);
+      console.log(' Received design:element-added', data);
       callback(data);
     });
   }
@@ -145,7 +145,7 @@ class SocketService {
   onElementUpdated(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:element-updated', (data) => {
-      console.log('📥 Received design:element-updated', data);
+      console.log(' Received design:element-updated', data);
       callback(data);
     });
   }
@@ -153,7 +153,7 @@ class SocketService {
   onElementDeleted(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:element-deleted', (data) => {
-      console.log('📥 Received design:element-deleted', data);
+      console.log(' Received design:element-deleted', data);
       callback(data);
     });
   }
@@ -161,7 +161,7 @@ class SocketService {
   onBackgroundChanged(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:background-changed', (data) => {
-      console.log('📥 Received design:background-changed', data);
+      console.log(' Received design:background-changed', data);
       callback(data);
     });
   }
@@ -169,7 +169,7 @@ class SocketService {
   onCanvasResized(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:resized', (data) => {
-      console.log('📥 Received design:resized', data);
+      console.log(' Received design:resized', data);
       callback(data);
     });
   }
@@ -177,7 +177,7 @@ class SocketService {
   onDesignNameChanged(callback: (data: any) => void): void {
     if (!this.socket) return;
     this.socket.on('design:name-changed', (data) => {
-      console.log('📥 Received design:name-changed', data);
+      console.log(' Received design:name-changed', data);
       callback(data);
     });
   }

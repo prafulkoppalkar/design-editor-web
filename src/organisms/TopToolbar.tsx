@@ -114,7 +114,7 @@ export default function TopToolbar({ onCommentsClick, isCommentsOpen = false }: 
         }
       );
 
-      console.log('✅ Design saved via WebSocket');
+      console.log('Design saved via WebSocket');
       dispatch(clearUnsaved());
       dispatch(setSaveStatus('saved'));
       dispatch(setIsSaving(false));
@@ -124,7 +124,7 @@ export default function TopToolbar({ onCommentsClick, isCommentsOpen = false }: 
       }, 2000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save design';
-      console.error('❌ Save failed:', errorMessage);
+      console.error('Save failed:', errorMessage);
       dispatch(setSaveStatus('error'));
       dispatch(setSaveError(errorMessage));
       dispatch(setIsSaving(false));

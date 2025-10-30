@@ -7,6 +7,7 @@ interface CommentItemProps {
 }
 
 export default function CommentItem({ comment, onDelete, currentUser }: CommentItemProps) {
+  // Move to utils
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();

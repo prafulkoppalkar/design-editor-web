@@ -54,6 +54,7 @@ export default function DesignCard({ design, onMenuOpen }: DesignCardProps) {
     setIsRenaming(true);
     try {
       await renameDesign(design._id, newName);
+      // Can just update the name here instead of reloading
       window.location.reload();
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to rename design';
